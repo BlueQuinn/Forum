@@ -32,13 +32,18 @@
         <property name="annotatedClasses">
             <list>
                 <value>winter.model.User</value>
+                <value>winter.model.Achievement</value>
+                <value>winter.model.Badge</value>
+                <value>winter.model.Comment</value>
+                <value>winter.model.Exercise</value>
+                <value>winter.model.Friend</value>
+                <value>winter.model.Likes</value>
+                <value>winter.model.Post</value>
+                <value>winter.model.Question</value>
+                <value>winter.model.Result</value>
+                <value>winter.model.Subject</value>
+                <value>winter.model.Subscription</value>
             </list>
-        </property>
-        <property name="hibernateProperties">
-            <props>
-                <prop key="hibernate.connection.url">jdbc:mysql://localhost:3306/forum</prop>
-                <prop key="hibernate.connection.driver_class">com.mysql.jdbc.Driver</prop>
-            </props>
         </property>
     </bean>
 
