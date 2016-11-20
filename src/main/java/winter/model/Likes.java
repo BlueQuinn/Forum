@@ -3,6 +3,7 @@ package winter.model;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 
 /**
  * Created by lequan on 11/20/2016.
@@ -10,8 +11,21 @@ import javax.persistence.Entity;
 @Entity
 public class Likes
 {
+    private int id;
     private Integer postId;
     private Integer userId;
+
+    @Id
+    @Column(name = "id", nullable = false)
+    public int getId()
+    {
+        return id;
+    }
+
+    public void setId(int id)
+    {
+        this.id = id;
+    }
 
     @Basic
     @Column(name = "postId", nullable = true)
@@ -51,6 +65,10 @@ public class Likes
 
         Likes likes = (Likes) o;
 
+        if (id != likes.id)
+        {
+            return false;
+        }
         if (postId != null ? !postId.equals(likes.postId) : likes.postId != null)
         {
             return false;
@@ -66,7 +84,8 @@ public class Likes
     @Override
     public int hashCode()
     {
-        int result = postId != null ? postId.hashCode() : 0;
+        int result = id;
+        result = 31 * result + (postId != null ? postId.hashCode() : 0);
         result = 31 * result + (userId != null ? userId.hashCode() : 0);
         return result;
     }

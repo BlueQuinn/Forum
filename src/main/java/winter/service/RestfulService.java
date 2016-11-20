@@ -3,6 +3,7 @@ package winter.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import winter.dao.RestfulDAO;
+import winter.model.User;
 
 import javax.transaction.Transactional;
 import java.io.Serializable;
@@ -28,9 +29,9 @@ public class RestfulService
         return  dao.getAll(modelName);
     }
 
-    public void add(Serializable obj)
+    public Serializable add(Serializable obj)
     {
-        dao.add(obj);
+       return dao.add(obj);
     }
 
     public void update(Serializable obj)

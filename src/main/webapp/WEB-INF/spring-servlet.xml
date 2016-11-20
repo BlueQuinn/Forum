@@ -56,10 +56,12 @@
 
     <!--dao-->
     <bean id="restfulDAO" class="winter.dao.RestfulDAO"/>
+    <bean id="loginDAO" class="winter.dao.LoginDAO"/>
     <!--dao-->
 
     <!--service-->
     <bean id="restfulService" class="winter.service.RestfulService"/>
+    <bean id="loginService" class="winter.service.LoginService"/>
     <!--service-->
 
 </beans>

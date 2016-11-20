@@ -1,18 +1,29 @@
 package winter.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * Created by lequan on 11/20/2016.
  */
 @Entity
-public class User
+public class User implements Serializable
 {
     private int id;
     private String username;
     private String password;
     private String email;
     private Integer role;
+
+    public User(String email, String password)
+    {
+        this.password = password;
+        this.email = email;
+    }
+
+    public User()
+    {
+    }
 
     @Id
     @Column(name = "id", nullable = false)

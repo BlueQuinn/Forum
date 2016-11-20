@@ -3,6 +3,7 @@ package winter.model;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 
 /**
  * Created by lequan on 11/20/2016.
@@ -10,8 +11,21 @@ import javax.persistence.Entity;
 @Entity
 public class Subscription
 {
+    private int id;
     private Integer userId;
     private Integer subjectId;
+
+    @Id
+    @Column(name = "id", nullable = false)
+    public int getId()
+    {
+        return id;
+    }
+
+    public void setId(int id)
+    {
+        this.id = id;
+    }
 
     @Basic
     @Column(name = "userId", nullable = true)
@@ -51,6 +65,10 @@ public class Subscription
 
         Subscription that = (Subscription) o;
 
+        if (id != that.id)
+        {
+            return false;
+        }
         if (userId != null ? !userId.equals(that.userId) : that.userId != null)
         {
             return false;
@@ -66,7 +84,8 @@ public class Subscription
     @Override
     public int hashCode()
     {
-        int result = userId != null ? userId.hashCode() : 0;
+        int result = id;
+        result = 31 * result + (userId != null ? userId.hashCode() : 0);
         result = 31 * result + (subjectId != null ? subjectId.hashCode() : 0);
         return result;
     }

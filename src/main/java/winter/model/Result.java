@@ -3,6 +3,7 @@ package winter.model;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 
 /**
  * Created by lequan on 11/20/2016.
@@ -10,9 +11,22 @@ import javax.persistence.Entity;
 @Entity
 public class Result
 {
+    private int id;
     private Integer userId;
     private Integer exerciseId;
     private Integer score;
+
+    @Id
+    @Column(name = "id", nullable = false)
+    public int getId()
+    {
+        return id;
+    }
+
+    public void setId(int id)
+    {
+        this.id = id;
+    }
 
     @Basic
     @Column(name = "userId", nullable = true)
@@ -64,6 +78,10 @@ public class Result
 
         Result result = (Result) o;
 
+        if (id != result.id)
+        {
+            return false;
+        }
         if (userId != null ? !userId.equals(result.userId) : result.userId != null)
         {
             return false;
@@ -83,7 +101,8 @@ public class Result
     @Override
     public int hashCode()
     {
-        int result = userId != null ? userId.hashCode() : 0;
+        int result = id;
+        result = 31 * result + (userId != null ? userId.hashCode() : 0);
         result = 31 * result + (exerciseId != null ? exerciseId.hashCode() : 0);
         result = 31 * result + (score != null ? score.hashCode() : 0);
         return result;

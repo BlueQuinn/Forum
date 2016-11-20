@@ -3,6 +3,7 @@ package winter.model;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 
 /**
  * Created by lequan on 11/20/2016.
@@ -10,8 +11,21 @@ import javax.persistence.Entity;
 @Entity
 public class Friend
 {
+    private int id;
     private Integer user1;
     private Integer user2;
+
+    @Id
+    @Column(name = "id", nullable = false)
+    public int getId()
+    {
+        return id;
+    }
+
+    public void setId(int id)
+    {
+        this.id = id;
+    }
 
     @Basic
     @Column(name = "user1", nullable = true)
@@ -51,6 +65,10 @@ public class Friend
 
         Friend friend = (Friend) o;
 
+        if (id != friend.id)
+        {
+            return false;
+        }
         if (user1 != null ? !user1.equals(friend.user1) : friend.user1 != null)
         {
             return false;
@@ -66,7 +84,8 @@ public class Friend
     @Override
     public int hashCode()
     {
-        int result = user1 != null ? user1.hashCode() : 0;
+        int result = id;
+        result = 31 * result + (user1 != null ? user1.hashCode() : 0);
         result = 31 * result + (user2 != null ? user2.hashCode() : 0);
         return result;
     }

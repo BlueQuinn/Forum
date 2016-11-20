@@ -1,5 +1,6 @@
 package winter.dao;
 
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,7 @@ public class RestfulDAO
     {
         try
         {
-            Class<?> type = Class.forName(modelName);
+            Class<?> type = Class.forName("winter.model." + modelName);
             return (Serializable) getSession().get(type, id);
         }
         catch (ClassNotFoundException e)
@@ -54,4 +55,5 @@ public class RestfulDAO
     {
         getSession().delete(model);
     }
+
 }
