@@ -4,12 +4,13 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import java.io.Serializable;
 
 /**
  * Created by lequan on 11/20/2016.
  */
 @Entity
-public class Subscription
+public class Subscription implements Serializable
 {
     private int id;
     private Integer userId;
