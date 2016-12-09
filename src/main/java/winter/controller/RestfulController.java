@@ -4,10 +4,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-import winter.http.Response;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import winter.annotation.JsonGet;
 import winter.http.ResponseFactory;
-import winter.model.User;
 import winter.service.RestfulService;
 
 import java.io.Serializable;
@@ -24,8 +24,7 @@ public class RestfulController<T extends Serializable>
 
     ObjectMapper mapper = new ObjectMapper();
 
-    @ResponseBody
-    @GetMapping()
+    @JsonGet()
     public String get(@PathVariable("model") String model) throws JsonProcessingException
     {
         //model = model.substring(0, 1).toUpperCase() + model.substring(1);
@@ -40,8 +39,7 @@ public class RestfulController<T extends Serializable>
         }
     }
 
-    @ResponseBody
-    @GetMapping(path = "/{id}")
+    @JsonGet(path = "/{id}")
     public String get(@PathVariable("model") String model, @PathVariable("id") int id) throws JsonProcessingException
     {
         //model = model.substring(0, 1).toUpperCase() + model.substring(1);
@@ -56,8 +54,7 @@ public class RestfulController<T extends Serializable>
         }
     }
 
-    @ResponseBody
-    @PostMapping()
+    /*@JsonPost()
     public String add(@RequestBody T data) throws JsonProcessingException
     {
         try
@@ -71,8 +68,7 @@ public class RestfulController<T extends Serializable>
         }
     }
 
-    @ResponseBody
-    @PutMapping(path = "/{id}")
+    @JsonPut(path = "/{id}")
     public String update(@PathVariable("id") int id, @RequestBody T data) throws JsonProcessingException
     {
         try
@@ -86,8 +82,7 @@ public class RestfulController<T extends Serializable>
         return ResponseFactory.getResponse(200, id);
     }
 
-    @ResponseBody
-    @DeleteMapping(path = "/{id}")
+    @JsonDelete(path = "/{id}")
     public String delete(@PathVariable("id") Serializable id) throws JsonProcessingException
     {
         try
@@ -99,5 +94,5 @@ public class RestfulController<T extends Serializable>
             return "";
         }
         return "";
-    }
+    }*/
 }
