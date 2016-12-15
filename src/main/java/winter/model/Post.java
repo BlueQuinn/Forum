@@ -17,7 +17,6 @@ public class Post implements Serializable
     private Integer subjectId;
     private String content;
     private String media;
-    private Integer comments;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -79,18 +78,6 @@ public class Post implements Serializable
         this.media = media;
     }
 
-    @Basic
-    @Column(name = "comments", nullable = true)
-    public Integer getComments()
-    {
-        return comments;
-    }
-
-    public void setComments(Integer comments)
-    {
-        this.comments = comments;
-    }
-
     @Override
     public boolean equals(Object o)
     {
@@ -125,10 +112,6 @@ public class Post implements Serializable
         {
             return false;
         }
-        if (comments != null ? !comments.equals(post.comments) : post.comments != null)
-        {
-            return false;
-        }
 
         return true;
     }
@@ -141,7 +124,6 @@ public class Post implements Serializable
         result = 31 * result + (subjectId != null ? subjectId.hashCode() : 0);
         result = 31 * result + (content != null ? content.hashCode() : 0);
         result = 31 * result + (media != null ? media.hashCode() : 0);
-        result = 31 * result + (comments != null ? comments.hashCode() : 0);
         return result;
     }
 }

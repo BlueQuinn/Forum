@@ -11,6 +11,9 @@
     <mvc:annotation-driven/>
 
 
+    <bean id="mapper" class="com.fasterxml.jackson.databind.ObjectMapper"/>
+
+
     <!--database-->
     <tx:annotation-driven transaction-manager="transactionManager"/>
 
@@ -57,11 +60,13 @@
     <!--dao-->
     <bean id="restfulDAO" class="winter.dao.RestfulDAO"/>
     <bean id="loginDAO" class="winter.dao.LoginDAO"/>
+    <bean id="friendDAO" class="winter.dao.FriendDAO"/>
     <!--dao-->
 
     <!--service-->
     <bean id="restfulService" class="winter.service.RestfulService"/>
     <bean id="loginService" class="winter.service.LoginService"/>
+    <bean id="friendService" class="winter.service.FriendService"/>
     <!--service-->
 
 </beans>

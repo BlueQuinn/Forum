@@ -3,7 +3,6 @@ package winter.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import winter.dao.RestfulDAO;
-import winter.model.User;
 
 import javax.transaction.Transactional;
 import java.io.Serializable;
@@ -29,6 +28,11 @@ public class RestfulService
         return  dao.getAll(modelName);
     }
 
+    public ArrayList getByReferenceId(String detail, String masterId, int id)
+    {
+        return  dao.getByReferenceId(detail, masterId, id);
+    }
+
     public Serializable add(Serializable obj)
     {
        return dao.add(obj);
@@ -39,8 +43,38 @@ public class RestfulService
         dao.update(obj);
     }
 
+
     /*public void delete(Serializable id)
     {
         dao.delete(dao.get(id));
     }*/
+
+
+
+
+    public ArrayList getResults(int userId)
+    {
+        return dao.getResults(userId);
+    }
+
+    public ArrayList getSubscriptions(int userId)
+    {
+        return dao.getSubscriptions(userId);
+    }
+
+    public ArrayList getAchievement(int userId)
+    {
+        return dao.getAchievement(userId);
+    }
+
+    public ArrayList getComments(int postId)
+    {
+        return dao.getComments(postId);
+    }
+
+    public ArrayList getLikes(int postId)
+    {
+        return dao.getLikes(postId);
+    }
+
 }

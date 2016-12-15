@@ -14,6 +14,7 @@ public class Exercise implements Serializable
 {
     private int id;
     private Integer ownerId;
+    private String nane;
     private String content;
 
     @Id
@@ -38,6 +39,18 @@ public class Exercise implements Serializable
     public void setOwnerId(Integer ownerId)
     {
         this.ownerId = ownerId;
+    }
+
+    @Basic
+    @Column(name = "name", nullable = true, length = 32)
+    public String getNane()
+    {
+        return nane;
+    }
+
+    public void setNane(String nane)
+    {
+        this.nane = nane;
     }
 
     @Basic

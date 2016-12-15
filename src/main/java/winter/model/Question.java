@@ -14,6 +14,7 @@ public class Question implements Serializable
 {
     private int id;
     private Integer exerciseId;
+    private String content;
     private String a;
     private String b;
     private String c;
@@ -41,6 +42,18 @@ public class Question implements Serializable
     public void setExerciseId(Integer exerciseId)
     {
         this.exerciseId = exerciseId;
+    }
+
+    @Basic
+    @Column(name = "content", nullable = true)
+    public String getContent()
+    {
+        return content;
+    }
+
+    public void setContent(String content)
+    {
+        this.content = content;
     }
 
     @Basic

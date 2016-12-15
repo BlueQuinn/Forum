@@ -5,8 +5,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import winter.annotation.JsonDelete;
 import winter.annotation.JsonGet;
+import winter.annotation.JsonPost;
+import winter.annotation.JsonPut;
 import winter.http.ResponseFactory;
 import winter.service.RestfulService;
 
@@ -22,7 +26,8 @@ public class RestfulController<T extends Serializable>
     @Autowired
     RestfulService service;
 
-    ObjectMapper mapper = new ObjectMapper();
+    @Autowired
+    ObjectMapper mapper;
 
     @JsonGet()
     public String get(@PathVariable("model") String model) throws JsonProcessingException
@@ -54,7 +59,7 @@ public class RestfulController<T extends Serializable>
         }
     }
 
-    /*@JsonPost()
+    @JsonPost()
     public String add(@RequestBody T data) throws JsonProcessingException
     {
         try
@@ -68,7 +73,7 @@ public class RestfulController<T extends Serializable>
         }
     }
 
-    @JsonPut(path = "/{id}")
+    @JsonPut("/{id}")
     public String update(@PathVariable("id") int id, @RequestBody T data) throws JsonProcessingException
     {
         try
@@ -82,7 +87,7 @@ public class RestfulController<T extends Serializable>
         return ResponseFactory.getResponse(200, id);
     }
 
-    @JsonDelete(path = "/{id}")
+    @JsonDelete("/{id}")
     public String delete(@PathVariable("id") Serializable id) throws JsonProcessingException
     {
         try
@@ -94,5 +99,5 @@ public class RestfulController<T extends Serializable>
             return "";
         }
         return "";
-    }*/
+    }
 }
