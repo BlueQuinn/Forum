@@ -12,7 +12,7 @@ import java.util.ArrayList;
  * Created by lequan on 12/15/2016.
  */
 @Transactional
-@Service("restfulService")
+@Service("friendService")
 public class FriendService
 {
     @Autowired
