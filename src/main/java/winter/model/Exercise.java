@@ -14,7 +14,7 @@ public class Exercise implements Serializable
 {
     private int id;
     private Integer ownerId;
-    private String nane;
+    private String name;
     private String content;
 
     @Id
@@ -43,18 +43,18 @@ public class Exercise implements Serializable
 
     @Basic
     @Column(name = "name", nullable = true, length = 32)
-    public String getNane()
+    public String getName()
     {
-        return nane;
+        return name;
     }
 
-    public void setNane(String nane)
+    public void setName(String name)
     {
-        this.nane = nane;
+        this.name = name;
     }
 
     @Basic
-    @Column(name = "content", nullable = true, length = 512)
+    @Column(name = "content", nullable = true, length = 1024)
     public String getContent()
     {
         return content;

@@ -16,7 +16,6 @@ public class Post implements Serializable
     private Integer userId;
     private Integer subjectId;
     private String content;
-    private String media;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -55,7 +54,7 @@ public class Post implements Serializable
     }
 
     @Basic
-    @Column(name = "content", nullable = true, length = 1024)
+    @Column(name = "content", nullable = true, length = 2048)
     public String getContent()
     {
         return content;
@@ -64,18 +63,6 @@ public class Post implements Serializable
     public void setContent(String content)
     {
         this.content = content;
-    }
-
-    @Basic
-    @Column(name = "media", nullable = true, length = 64)
-    public String getMedia()
-    {
-        return media;
-    }
-
-    public void setMedia(String media)
-    {
-        this.media = media;
     }
 
     @Override
@@ -108,10 +95,6 @@ public class Post implements Serializable
         {
             return false;
         }
-        if (media != null ? !media.equals(post.media) : post.media != null)
-        {
-            return false;
-        }
 
         return true;
     }
@@ -123,7 +106,6 @@ public class Post implements Serializable
         result = 31 * result + (userId != null ? userId.hashCode() : 0);
         result = 31 * result + (subjectId != null ? subjectId.hashCode() : 0);
         result = 31 * result + (content != null ? content.hashCode() : 0);
-        result = 31 * result + (media != null ? media.hashCode() : 0);
         return result;
     }
 }

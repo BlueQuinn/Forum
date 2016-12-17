@@ -45,7 +45,7 @@ public class Question implements Serializable
     }
 
     @Basic
-    @Column(name = "content", nullable = true)
+    @Column(name = "content", nullable = true, length = 1024)
     public String getContent()
     {
         return content;

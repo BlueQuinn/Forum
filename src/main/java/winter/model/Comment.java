@@ -16,7 +16,6 @@ public class Comment implements Serializable
     private Integer postId;
     private Integer userId;
     private String content;
-    private String media;
     private Integer rating;
 
     @Id
@@ -56,7 +55,7 @@ public class Comment implements Serializable
     }
 
     @Basic
-    @Column(name = "content", nullable = true, length = 128)
+    @Column(name = "content", nullable = true, length = 1024)
     public String getContent()
     {
         return content;
@@ -65,18 +64,6 @@ public class Comment implements Serializable
     public void setContent(String content)
     {
         this.content = content;
-    }
-
-    @Basic
-    @Column(name = "media", nullable = true, length = 64)
-    public String getMedia()
-    {
-        return media;
-    }
-
-    public void setMedia(String media)
-    {
-        this.media = media;
     }
 
     @Basic
@@ -121,10 +108,6 @@ public class Comment implements Serializable
         {
             return false;
         }
-        if (media != null ? !media.equals(comment.media) : comment.media != null)
-        {
-            return false;
-        }
         if (rating != null ? !rating.equals(comment.rating) : comment.rating != null)
         {
             return false;
@@ -140,7 +123,6 @@ public class Comment implements Serializable
         result = 31 * result + (postId != null ? postId.hashCode() : 0);
         result = 31 * result + (userId != null ? userId.hashCode() : 0);
         result = 31 * result + (content != null ? content.hashCode() : 0);
-        result = 31 * result + (media != null ? media.hashCode() : 0);
         result = 31 * result + (rating != null ? rating.hashCode() : 0);
         return result;
     }
