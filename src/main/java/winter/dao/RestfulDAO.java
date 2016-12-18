@@ -5,11 +5,18 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import winter.dto.Comment;
+import winter.dto.Likes;
 import winter.dto.Result;
+import winter.dto.Subscription;
 import winter.model.User;
 
 import java.io.Serializable;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Properties;
 
 /**
  * Created by lequan on 11/20/2016.
@@ -61,21 +68,82 @@ public class RestfulDAO
         getSession().update(model);
     }
 
-    public void delete(Serializable model)
+    public void delete(String model, int id)
     {
-        getSession().delete(model);
+        String hql = String.format("delete from %s where id = %d", model, id);
+        Query query = getSession().createQuery(hql);
+        query.executeUpdate();
     }
 
 
+    /* Field[] createField(Class<?> type, String[] columns)
+   {
+       Field[] fields = new Field[columns.length];
+       try
+       {
+           Field field;
+           for (int i = 0; i < columns.length; ++i)
+           {
+               fields[i] = type.getDeclaredField(columns[i]);
+               fields[i].setAccessible(true);
+           }
+       }
+       catch (NoSuchFieldException e)
+       {
+           e.printStackTrace();
+       }
+       return fields;
+   }*/
 
+    ArrayList parseResult(Class<?> type, ArrayList<Object[]> rows)
+    {
+        ArrayList list = new ArrayList<>();
+        try
+        {
+            Constructor<?> constructor = type.getConstructor();
+            Object model = constructor.newInstance();
 
+            Field[] fields = type.getDeclaredFields();//createField(type, columns);
+            for (Field field : fields)
+            {
+                field.setAccessible(true);
+            }
+
+            for (Object[] row : rows)
+            {
+                for (int i = 0; i < fields.length; ++i)
+                {
+                    fields[i].set(model, row[i]);
+                }
+                list.add(model);
+            }
+        }
+        catch (IllegalAccessException e)
+        {
+            e.printStackTrace();
+        }
+        catch (NoSuchMethodException e)
+        {
+            e.printStackTrace();
+        }
+        catch (InstantiationException e)
+        {
+            e.printStackTrace();
+        }
+        catch (InvocationTargetException e)
+        {
+            e.printStackTrace();
+        }
+        return list;
+    }
 
 
     public ArrayList getSubscriptions(int userId)
     {
-        String hql = String.format("select Sj.name from Subject Sj, Subscription Sc, User U where U.id = %d and U.id = Sc.userId and Sc.subjectId = Sj.id", userId);
+        String hql = String.format("select Sc.id, Sj.name from Subject Sj, Subscription Sc, User U where U.id = %d and U.id = Sc.userId and Sc.subjectId = Sj.id", userId);
         Query query = getSession().createQuery(hql);
-        return (ArrayList) query.list();
+        ArrayList<Object[]> list = (ArrayList) query.list();
+        return parseResult(Subscription.class, list);
     }
 
     public ArrayList getAchievement(int userId)
@@ -90,33 +158,22 @@ public class RestfulDAO
         String hql = String.format("select E.name, R.score from Result R, Exercise E, User U where U.id = %d and U.id = R.userId and R.exerciseId = E.id", userId);
         Query query = getSession().createQuery(hql);
         ArrayList list = (ArrayList) query.list();
-        ArrayList<Result> results = new ArrayList<Result>();
-        for (Object i : list)
-        {
-            Object[] o = (Object[])i;
-            results.add(new Result((String)o[0], (Integer) o[1]));
-        }
-        return results;
+        return parseResult(Result.class, list);
     }
 
     public ArrayList getComments(int postId)
     {
-        String hql = String.format("select C.content, C.rating, U.username from Comment C, Post P, User U where P.id = %d and P.id = C.postId and C.userId = U.id", postId);
+        String hql = String.format("select C.id, U.id, U.username, C.content, C.rating  from Comment C, Post P, User U where P.id = %d and P.id = C.postId and C.userId = U.id", postId);
         Query query = getSession().createQuery(hql);
         ArrayList list = (ArrayList) query.list();
-        ArrayList<Comment> comments = new ArrayList<Comment>();
-        for (Object i : list)
-        {
-            Object[] o = (Object[])i;
-            comments.add(new Comment((String)o[2], (String)o[0], (Integer) o[1]));
-        }
-        return comments;
+        return parseResult(Comment.class, list);
     }
 
     public ArrayList getLikes(int postId)
     {
-        String hql = String.format("select U.name from Post P, Likes L, User U where U.id = %d and U.id = L.userId and L.postId = P.id", postId);
+        String hql = String.format("select L.id, U.id, U.name from Post P, Likes L, User U where U.id = %d and U.id = L.userId and L.postId = P.id", postId);
         Query query = getSession().createQuery(hql);
-        return (ArrayList) query.list();
+        ArrayList list = (ArrayList) query.list();
+        return parseResult(Likes.class, list);
     }
 }

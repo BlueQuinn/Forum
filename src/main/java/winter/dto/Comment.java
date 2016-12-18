@@ -5,26 +5,38 @@ package winter.dto;
  */
 public class Comment
 {
-    String user;
+    int id;
+    int userId;
+    String username;
     String content;
     int rating;
 
-    public Comment(String user, String content, int rating)
+    public Comment(int userId, String username, String content, int rating)
     {
-        this.user = user;
+        this.userId = userId;
+        this.username = username;
         this.content = content;
         this.rating = rating;
     }
 
-    public String getUser()
+    public int getUserId()
     {
-
-        return user;
+        return userId;
     }
 
-    public void setUser(String user)
+    public void setUserId(int userId)
     {
-        this.user = user;
+        this.userId = userId;
+    }
+
+    public String getUsername()
+    {
+        return username;
+    }
+
+    public void setUsername(String username)
+    {
+        this.username = username;
     }
 
     public String getContent()

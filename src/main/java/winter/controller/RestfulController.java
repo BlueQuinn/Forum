@@ -88,16 +88,16 @@ public class RestfulController<T extends Serializable>
     }
 
     @JsonDelete("/{id}")
-    public String delete(@PathVariable("id") Serializable id) throws JsonProcessingException
+    public String delete(@PathVariable("model") String model, @PathVariable("id") int id) throws JsonProcessingException
     {
         try
         {
-            //service.delete(id);
+            service.delete(model, id);
         }
         catch (Exception ex)
         {
-            return "";
+            return ResponseFactory.getResponse(400, ex.getMessage());
         }
-        return "";
+        return ResponseFactory.getResponse(200);
     }
 }

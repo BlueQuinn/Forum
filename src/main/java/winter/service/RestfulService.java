@@ -43,11 +43,10 @@ public class RestfulService
         dao.update(obj);
     }
 
-
-    /*public void delete(Serializable id)
+    public void delete(String model, int id)
     {
-        dao.delete(dao.get(id));
-    }*/
+        dao.delete(model, id);
+    }
 
 
 
