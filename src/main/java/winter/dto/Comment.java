@@ -11,12 +11,14 @@ public class Comment
     String content;
     int rating;
 
-    public Comment(int userId, String username, String content, int rating)
+    public int getId()
     {
-        this.userId = userId;
-        this.username = username;
-        this.content = content;
-        this.rating = rating;
+        return id;
+    }
+
+    public void setId(int id)
+    {
+        this.id = id;
     }
 
     public int getUserId()

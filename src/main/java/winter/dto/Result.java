@@ -28,10 +28,4 @@ public class Result
         this.score = score;
     }
 
-    public Result(String exercise, int score)
-    {
-
-        this.exercise = exercise;
-        this.score = score;
-    }
 }
