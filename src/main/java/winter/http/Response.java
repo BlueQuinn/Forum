@@ -8,7 +8,7 @@ import java.io.Serializable;
 public class Response
 {
     int code;
-    Serializable message;
+    Serializable response;
 
     public int getCode()
     {
@@ -20,14 +20,14 @@ public class Response
         this.code = code;
     }
 
-    public Serializable getMessage()
+    public Serializable getResponse()
     {
-        return message;
+        return response;
     }
 
-    public void setMessage(Serializable message)
+    public void setResponse(Serializable response)
     {
-        this.message = message;
+        this.response = response;
     }
 
     public Response(int code)
@@ -36,10 +36,10 @@ public class Response
         this.code = code;
     }
 
-    public Response(int code, Serializable message)
+    public Response(int code, Serializable response)
     {
 
         this.code = code;
-        this.message = message;
+        this.response = response;
     }
 }

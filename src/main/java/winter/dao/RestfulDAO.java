@@ -97,11 +97,10 @@ public class RestfulDAO
 
     ArrayList parseResult(Class<?> type, ArrayList<Object[]> rows)
     {
-        ArrayList list = new ArrayList<>();
         try
         {
-            Constructor<?> constructor = type.getConstructor();
-            Object model = constructor.newInstance();
+            Constructor<?> constructor = type.getConstructor();     // throw exception
+            Object model = constructor.newInstance();     // throw exception
 
             Field[] fields = type.getDeclaredFields();//createField(type, columns);
             for (Field field : fields)
@@ -109,6 +108,7 @@ public class RestfulDAO
                 field.setAccessible(true);
             }
 
+            ArrayList list = new ArrayList<>();
             for (Object[] row : rows)
             {
                 for (int i = 0; i < fields.length; ++i)
@@ -117,6 +117,7 @@ public class RestfulDAO
                 }
                 list.add(model);
             }
+            return list;
         }
         catch (IllegalAccessException e)
         {
@@ -134,7 +135,7 @@ public class RestfulDAO
         {
             e.printStackTrace();
         }
-        return list;
+        return null;
     }
 
 

@@ -27,6 +27,9 @@ public class LoginDAO
         Query query = session.createQuery(hql);
         query.setParameter("email", email);
         query.setParameter("password", password);
-        return (User) query.uniqueResult();
+        Object user = query.uniqueResult();
+        if (user == null)
+            return null;
+        return (User) user;
     }
 }

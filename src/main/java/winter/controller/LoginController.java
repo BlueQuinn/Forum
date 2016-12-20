@@ -22,15 +22,19 @@ public class LoginController
     @Autowired
     LoginService service;
 
-    ObjectMapper mapper = new ObjectMapper();
-    
     @ResponseBody
     @PostMapping
     public String login(@RequestBody User user) throws JsonProcessingException
     {
         try
         {
-            return mapper.writeValueAsString(service.login(user));
+            user = service.login(user);
+            if (user == null)
+            {
+                return ResponseFactory.getResponse(401, "Can't authorize user");
+            }
+
+            return ResponseFactory.getResponse(200, user);
         }
         catch (JsonProcessingException ex)
         {

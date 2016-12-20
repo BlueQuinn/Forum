@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import winter.annotation.JsonGet;
+import winter.http.ResponseFactory;
 import winter.model.Exercise;
 import winter.service.RestfulService;
 
@@ -17,21 +18,15 @@ import winter.service.RestfulService;
 @RequestMapping("/api/exercise")
 public class ExerciseController extends RestfulController<Exercise>
 {
-    @Autowired
-    ObjectMapper mapper;
-
-    @Autowired
-    RestfulService service;
-
     @JsonGet("/{id}/questions")
     public String getQuestions(@PathVariable("id") int id) throws JsonProcessingException
     {
-        return mapper.writeValueAsString(service.getByReferenceId("Question", "exerciseId", id));
+        return ResponseFactory.getResponse(200, service.getByReferenceId("Question", "exerciseId", id));
     }
 
     @JsonGet("/{id}/results")
     public String getResults(@PathVariable("id") int id) throws JsonProcessingException
     {
-        return mapper.writeValueAsString(service.getByReferenceId("Result", "exerciseId", id));
+        return ResponseFactory.getResponse(200, service.getByReferenceId("Result", "exerciseId", id));
     }
 }

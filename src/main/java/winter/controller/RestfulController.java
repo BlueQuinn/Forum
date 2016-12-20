@@ -26,16 +26,13 @@ public class RestfulController<T extends Serializable>
     @Autowired
     RestfulService service;
 
-    @Autowired
-    ObjectMapper mapper;
-
     @JsonGet()
     public String get(@PathVariable("model") String model) throws JsonProcessingException
     {
         //model = model.substring(0, 1).toUpperCase() + model.substring(1);
         try
         {
-            return mapper.writeValueAsString(service.getAll(model));
+            return ResponseFactory.getResponse(200, service.getAll(model));
         }
         catch (JsonProcessingException ex)
         {
@@ -50,7 +47,7 @@ public class RestfulController<T extends Serializable>
         //model = model.substring(0, 1).toUpperCase() + model.substring(1);
         try
         {
-            return mapper.writeValueAsString(service.get(model, id));
+            return ResponseFactory.getResponse(200, service.get(model, id));
         }
         catch (JsonProcessingException ex)
         {
@@ -79,12 +76,12 @@ public class RestfulController<T extends Serializable>
         try
         {
             service.update(data);
+            return ResponseFactory.getResponse(200, id);
         }
         catch (Exception ex)
         {
             return ResponseFactory.getResponse(400, ex.getMessage());
         }
-        return ResponseFactory.getResponse(200, id);
     }
 
     @JsonDelete("/{id}")
@@ -93,11 +90,11 @@ public class RestfulController<T extends Serializable>
         try
         {
             service.delete(model, id);
+            return ResponseFactory.getResponse(200);
         }
         catch (Exception ex)
         {
             return ResponseFactory.getResponse(400, ex.getMessage());
         }
-        return ResponseFactory.getResponse(200);
     }
 }

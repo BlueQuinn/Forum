@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import winter.annotation.JsonGet;
+import winter.http.ResponseFactory;
 import winter.model.Post;
 import winter.service.RestfulService;
 
@@ -17,23 +18,17 @@ import winter.service.RestfulService;
 @RequestMapping("/api/post")
 public class PostController extends RestfulController<Post>
 {
-    @Autowired
-    ObjectMapper mapper;
-
-    @Autowired
-    RestfulService service;
-
     @JsonGet("/{id}/comments")
     public String getComments(@PathVariable("id") int id) throws JsonProcessingException
     {
         //return mapper.writeValueAsString(service.getByReferenceId("Comment", "postId", id));
-        return mapper.writeValueAsString(service.getComments(id));
+        return ResponseFactory.getResponse(200, service.getComments(id));
     }
 
     @JsonGet("/{id}/likes")
     public String getLikes(@PathVariable("id") int id) throws JsonProcessingException
     {
         //return mapper.writeValueAsString(service.getByReferenceId("Likes", "postId", id));
-        return mapper.writeValueAsString(service.getLikes(id));
+        return ResponseFactory.getResponse(200, service.getLikes(id));
     }
 }

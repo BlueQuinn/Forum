@@ -17,8 +17,8 @@ public class ResponseFactory
         return mapper.writeValueAsString(new Response(code));
     }
 
-    public static String getResponse(int code, Serializable message) throws JsonProcessingException
+    public static String getResponse(int code, Serializable response) throws JsonProcessingException
     {
-        return mapper.writeValueAsString(new Response(code, message));
+        return mapper.writeValueAsString(new Response(code, response));
     }
 }
