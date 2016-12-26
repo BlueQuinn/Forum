@@ -1,9 +1,6 @@
 package winter.model;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
 
 /**
@@ -17,9 +14,11 @@ public class Comment implements Serializable
     private Integer userId;
     private String content;
     private Integer rating;
+    private Long date;
 
     @Id
     @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public int getId()
     {
         return id;
@@ -76,6 +75,18 @@ public class Comment implements Serializable
     public void setRating(Integer rating)
     {
         this.rating = rating;
+    }
+
+    @Basic
+    @Column(name = "date", nullable = true)
+    public Long getDate()
+    {
+        return date;
+    }
+
+    public void setDate(Long date)
+    {
+        this.date = date;
     }
 
     @Override

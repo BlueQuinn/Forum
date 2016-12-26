@@ -61,6 +61,7 @@ public class RestfulController<T extends Serializable>
     {
         try
         {
+            parse(data);
             Serializable id = service.add(data);
             return ResponseFactory.getResponse(200, id);
         }
@@ -96,5 +97,10 @@ public class RestfulController<T extends Serializable>
         {
             return ResponseFactory.getResponse(400, ex.getMessage());
         }
+    }
+
+    void parse(T data)
+    {
+
     }
 }

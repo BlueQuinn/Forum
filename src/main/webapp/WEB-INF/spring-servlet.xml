@@ -12,7 +12,9 @@
 
 
     <bean id="mapper" class="com.fasterxml.jackson.databind.ObjectMapper"/>
-
+    <bean id="dateFormat" class="java.text.SimpleDateFormat"/>
+        <!--<constructor-arg value=""/>
+            </bean>-->
 
     <!--database-->
     <tx:annotation-driven transaction-manager="transactionManager"/>

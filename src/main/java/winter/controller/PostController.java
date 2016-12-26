@@ -11,6 +11,9 @@ import winter.http.ResponseFactory;
 import winter.model.Post;
 import winter.service.RestfulService;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * Created by lequan on 11/20/2016.
  */
@@ -18,6 +21,16 @@ import winter.service.RestfulService;
 @RequestMapping("/api/post")
 public class PostController extends RestfulController<Post>
 {
+    /*@Autowired
+    SimpleDateFormat dateFormat;*/
+
+    @Override
+    void parse(Post post)
+    {
+        long date = new Date().getTime();
+        post.setDate(date);
+    }
+
     @JsonGet("/{id}/comments")
     public String getComments(@PathVariable("id") int id) throws JsonProcessingException
     {

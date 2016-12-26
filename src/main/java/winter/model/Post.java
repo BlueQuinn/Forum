@@ -1,9 +1,6 @@
 package winter.model;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
 
 /**
@@ -16,9 +13,11 @@ public class Post implements Serializable
     private Integer userId;
     private Integer subjectId;
     private String content;
+    private Long date;
 
     @Id
     @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public int getId()
     {
         return id;
@@ -63,6 +62,18 @@ public class Post implements Serializable
     public void setContent(String content)
     {
         this.content = content;
+    }
+
+    @Basic
+    @Column(name = "date", nullable = true)
+    public Long getDate()
+    {
+        return date;
+    }
+
+    public void setDate(Long date)
+    {
+        this.date = date;
     }
 
     @Override
