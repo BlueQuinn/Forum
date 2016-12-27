@@ -164,7 +164,7 @@ public class RestfulDAO
 
     public ArrayList getComments(int postId)
     {
-        String hql = String.format("select C.id, U.id, U.username, C.content, C.rating  from Comment C, Post P, User U where P.id = %d and P.id = C.postId and C.userId = U.id", postId);
+        String hql = String.format("select C.id, U.id, U.username, C.content, C.rating, C.date  from Comment C, Post P, User U where P.id = %d and P.id = C.postId and C.userId = U.id", postId);
         Query query = getSession().createQuery(hql);
         ArrayList list = (ArrayList) query.list();
         return parseResult(Comment.class, list);

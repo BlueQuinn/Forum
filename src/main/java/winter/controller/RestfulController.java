@@ -26,6 +26,9 @@ public class RestfulController<T extends Serializable>
     @Autowired
     RestfulService service;
 
+    @Autowired
+    ObjectMapper mapper;
+
     @JsonGet()
     public String get(@PathVariable("model") String model) throws JsonProcessingException
     {

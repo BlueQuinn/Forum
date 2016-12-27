@@ -10,9 +10,10 @@ import java.io.Serializable;
 public class Exercise implements Serializable
 {
     private int id;
-    private Integer ownerId;
+    private Integer subjectId;
     private String name;
     private String content;
+    private String difficulty;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -28,15 +29,15 @@ public class Exercise implements Serializable
     }
 
     @Basic
-    @Column(name = "ownerId", nullable = true)
-    public Integer getOwnerId()
+    @Column(name = "subjectId", nullable = true)
+    public Integer getSubjectId()
     {
-        return ownerId;
+        return subjectId;
     }
 
-    public void setOwnerId(Integer ownerId)
+    public void setSubjectId(Integer subjectId)
     {
-        this.ownerId = ownerId;
+        this.subjectId = subjectId;
     }
 
     @Basic
@@ -63,6 +64,18 @@ public class Exercise implements Serializable
         this.content = content;
     }
 
+    @Basic
+    @Column(name = "difficulty", nullable = true, length = 32)
+    public String getDifficulty()
+    {
+        return difficulty;
+    }
+
+    public void setDifficulty(String difficulty)
+    {
+        this.difficulty = difficulty;
+    }
+
     @Override
     public boolean equals(Object o)
     {
@@ -81,7 +94,7 @@ public class Exercise implements Serializable
         {
             return false;
         }
-        if (ownerId != null ? !ownerId.equals(exercise.ownerId) : exercise.ownerId != null)
+        if (subjectId != null ? !subjectId.equals(exercise.subjectId) : exercise.subjectId != null)
         {
             return false;
         }
@@ -97,7 +110,7 @@ public class Exercise implements Serializable
     public int hashCode()
     {
         int result = id;
-        result = 31 * result + (ownerId != null ? ownerId.hashCode() : 0);
+        result = 31 * result + (subjectId != null ? subjectId.hashCode() : 0);
         result = 31 * result + (content != null ? content.hashCode() : 0);
         return result;
     }

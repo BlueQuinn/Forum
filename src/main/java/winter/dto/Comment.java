@@ -10,6 +10,7 @@ public class Comment
     String username;
     String content;
     int rating;
+    private Long date;
 
     public int getId()
     {
@@ -59,5 +60,15 @@ public class Comment
     public void setRating(int rating)
     {
         this.rating = rating;
+    }
+
+    public Long getDate()
+    {
+        return date;
+    }
+
+    public void setDate(Long date)
+    {
+        this.date = date;
     }
 }
