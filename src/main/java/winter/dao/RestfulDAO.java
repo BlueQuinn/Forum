@@ -99,18 +99,18 @@ public class RestfulDAO
     {
         try
         {
-            Constructor<?> constructor = type.getConstructor();     // throw exception
-            Object model = constructor.newInstance();     // throw exception
-
-            Field[] fields = type.getDeclaredFields();//createField(type, columns);
+            Field[] fields = type.getDeclaredFields();      //createField(type, columns);
             for (Field field : fields)
             {
                 field.setAccessible(true);
             }
 
             ArrayList list = new ArrayList<>();
+            Constructor<?> constructor = type.getConstructor();     // throw exception
+            Object model;
             for (Object[] row : rows)
             {
+                model = constructor.newInstance();      // throw exception
                 for (int i = 0; i < fields.length; ++i)
                 {
                     fields[i].set(model, row[i]);
