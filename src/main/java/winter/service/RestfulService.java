@@ -28,6 +28,11 @@ public class RestfulService
         return  dao.getAll(modelName);
     }
 
+    public ArrayList getAll(String modelName, String order, String sort)
+    {
+        return  dao.getAll(modelName, order, sort);
+    }
+
     public ArrayList getByReferenceId(String detail, String masterId, int id)
     {
         return  dao.getByReferenceId(detail, masterId, id);

@@ -55,6 +55,12 @@ public class RestfulDAO
         return (ArrayList) getSession().createQuery("from " + modelName).list();
     }
 
+    public ArrayList getAll(String modelName, String order, String sort)
+    {
+        String hql  = "from " + modelName + " order by " + order + " " + sort;
+        return (ArrayList) getSession().createQuery(hql).list();
+    }
+
     public ArrayList getByReferenceId(String detail, String masterId, int id)
     {
         String hql = String.format("select * from %s where %s = %d", detail, masterId, id);
