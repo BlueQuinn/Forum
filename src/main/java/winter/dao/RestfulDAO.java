@@ -63,7 +63,7 @@ public class RestfulDAO
 
     public ArrayList getByReferenceId(String detail, String masterId, int id)
     {
-        String hql = String.format("select * from %s where %s = %d", detail, masterId, id);
+        String hql = String.format("from %s where %s = %d", detail, masterId, id);
         //"select o from " + master + " o where " + masterid + " = " + id;
         Query query = getSession().createQuery(hql);
         return (ArrayList) query.list();
