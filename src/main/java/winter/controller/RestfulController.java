@@ -58,6 +58,7 @@ public class RestfulController<T extends Serializable>
         System.out.println(mapper.writeValueAsString(criteria));
         try
         {
+            model = model.substring(0, 1).toUpperCase() + model.substring(1);
             return ResponseFactory.getResponse(200, service.getAll(model, criteria));
         }
         catch (JsonProcessingException ex)
@@ -116,6 +117,7 @@ public class RestfulController<T extends Serializable>
     {
         try
         {
+            model = model.substring(0, 1).toUpperCase() + model.substring(1);
             service.delete(model, id);
             return ResponseFactory.getResponse(200);
         }

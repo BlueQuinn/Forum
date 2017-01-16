@@ -1,5 +1,6 @@
 package winter.dao;
 
+import org.apache.commons.validator.EmailValidator;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -31,16 +32,20 @@ public class LoginDAO
         return false;
     }
 
-    public boolean validEmail(String email)
+    public String validEmail(String email)
     {
+        EmailValidator validator = EmailValidator.getInstance();
+        if (!validator.isValid(email))
+            return "Invalid email";
+
         String hql = "from User where email = :email";
         Session session = getSession();
         Query query = session.createQuery(hql);
         query.setParameter("email", email);
         Object user = query.uniqueResult();
         if (user == null)
-            return true;
-        return false;
+            return null;
+        return "This email has already been used";
     }
 
     public User getUser(String email, String password)

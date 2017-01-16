@@ -27,7 +27,7 @@ public class LoginService
         return dao.validUsername(username);
     }
 
-    public boolean validEmail(String email)
+    public String validEmail(String email)
     {
         return dao.validEmail(email);
     }

@@ -79,9 +79,12 @@ public class RestfulDAO
                 hql += " order by " + criteria.getTable() + "." + criteria.getOrder();
             }
         }
-        else if (!criteria.getOrder().equals("id"))
+        else
         {
-            hql += " order by " + criteria.getOrder();
+            if (!criteria.getOrder().equals("id") || !criteria.getSort().equals("asc"))
+            {
+                hql += " order by " + criteria.getOrder();
+            }
         }
 
         if (!criteria.getSort().equals("asc"))

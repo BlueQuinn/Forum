@@ -37,9 +37,10 @@ public class UserController extends RestfulController<User>
             return ResponseFactory.getResponse(400, "Username has been taken");
         }
 
-        if (!loginService.validEmail(data.getEmail()))
+        String error = loginService.validEmail(data.getEmail());
+        if (error != null)
         {
-            return ResponseFactory.getResponse(400, "Email has been used");
+            return ResponseFactory.getResponse(400, error);
         }
 
         return super.add(data);
