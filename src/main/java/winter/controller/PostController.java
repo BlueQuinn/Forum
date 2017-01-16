@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import winter.annotation.JsonGet;
+import winter.dto.Criteria;
 import winter.http.ResponseFactory;
 import winter.model.Post;
 import winter.service.RestfulService;
@@ -21,27 +23,22 @@ import java.util.Date;
 @RequestMapping("/api/post")
 public class PostController extends RestfulController<Post>
 {
-    /*@Autowired
-    SimpleDateFormat dateFormat;*/
-
     @Override
-    void parse(Post post)
+    void parseBeforeAdd(Post post)
     {
         long date = new Date().getTime();
         post.setDate(date);
     }
 
     @JsonGet("/{id}/comments")
-    public String getComments(@PathVariable("id") int id) throws JsonProcessingException
+    public String getComments(@PathVariable("id") int id, Criteria criteria) throws JsonProcessingException
     {
-        //return mapper.writeValueAsString(service.getByReferenceId("Comment", "postId", id));
-        return ResponseFactory.getResponse(200, service.getComments(id));
+        return ResponseFactory.getResponse(200, service.getComments(id, criteria));
     }
 
     @JsonGet("/{id}/likes")
-    public String getLikes(@PathVariable("id") int id) throws JsonProcessingException
+    public String getLikes(@PathVariable("id") int id, Criteria criteria) throws JsonProcessingException
     {
-        //return mapper.writeValueAsString(service.getByReferenceId("Likes", "postId", id));
-        return ResponseFactory.getResponse(200, service.getLikes(id));
+        return ResponseFactory.getResponse(200, service.getLikes(id, criteria));
     }
 }

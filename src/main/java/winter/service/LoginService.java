@@ -21,4 +21,14 @@ public class LoginService
     {
         return dao.getUser(user.getEmail(), user.getPassword());
     }
+
+    public boolean validUsername(String username)
+    {
+        return dao.validUsername(username);
+    }
+
+    public boolean validEmail(String email)
+    {
+        return dao.validEmail(email);
+    }
 }

@@ -15,7 +15,7 @@ import java.util.Date;
 public class CommentController extends RestfulController<Comment>
 {
     @Override
-    void parse(Comment comment)
+    void parseBeforeAdd(Comment comment)
     {
         long date = new Date().getTime();
         comment.setDate(date);

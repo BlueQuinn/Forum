@@ -13,7 +13,10 @@ public class Post implements Serializable
     private Integer userId;
     private Integer subjectId;
     private String content;
+    private Integer rating;
     private Long date;
+    private String image;
+    private Integer commentCount;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -65,6 +68,30 @@ public class Post implements Serializable
     }
 
     @Basic
+    @Column(name = "rating", nullable = true)
+    public Integer getRating()
+    {
+        return rating;
+    }
+
+    public void setRating(Integer rating)
+    {
+        this.rating = rating;
+    }
+
+    @Basic
+    @Column(name = "image", nullable = true)
+    public String getImage()
+    {
+        return image;
+    }
+
+    public void setImage(String image)
+    {
+        this.image = image;
+    }
+
+    @Basic
     @Column(name = "date", nullable = true)
     public Long getDate()
     {
@@ -74,6 +101,17 @@ public class Post implements Serializable
     public void setDate(Long date)
     {
         this.date = date;
+    }
+
+    @Transient
+    public Integer getCommentCount()
+    {
+        return commentCount;
+    }
+
+    public void setCommentCount(Integer commentCount)
+    {
+        this.commentCount = commentCount;
     }
 
     @Override

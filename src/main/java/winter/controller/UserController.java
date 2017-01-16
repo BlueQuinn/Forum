@@ -5,11 +5,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import winter.annotation.JsonGet;
+import winter.annotation.JsonPost;
+import winter.dto.Criteria;
 import winter.http.ResponseFactory;
 import winter.model.User;
 import winter.service.FriendService;
+import winter.service.LoginService;
 import winter.service.RestfulService;
 
 /**
@@ -20,7 +24,26 @@ import winter.service.RestfulService;
 public class UserController extends RestfulController<User>
 {
     @Autowired
+    LoginService loginService;
+
+    @Autowired
     FriendService friendService;
+
+    @Override
+    public String add(@RequestBody User data) throws JsonProcessingException
+    {
+        if (!loginService.validUsername(data.getUsername()))
+        {
+            return ResponseFactory.getResponse(400, "Username has been taken");
+        }
+
+        if (!loginService.validEmail(data.getEmail()))
+        {
+            return ResponseFactory.getResponse(400, "Email has been used");
+        }
+
+        return super.add(data);
+    }
 
     @JsonGet("/{id}/friends")
     public String getFriends(@PathVariable("id") int id) throws JsonProcessingException
@@ -31,27 +54,36 @@ public class UserController extends RestfulController<User>
     @JsonGet("/{id}/subscriptions")
     public String getSubscriptions(@PathVariable("id") int id) throws JsonProcessingException
     {
-        //return mapper.writeValueAsString(service.getByReferenceId("Subscription", "userId", id));
         return ResponseFactory.getResponse(200, service.getSubscriptions(id));
     }
 
     @JsonGet("/{id}/badges")
     public String getAchievements(@PathVariable("id") int id) throws JsonProcessingException
     {
-        //return mapper.writeValueAsString(service.getByReferenceId("Achievement", "userId", id));
         return ResponseFactory.getResponse(200, service.getAchievement(id));
     }
 
     @JsonGet("/{id}/results")
-    public String getResults(@PathVariable("id") int id) throws JsonProcessingException
+    public String getResults(@PathVariable("id") int id, Criteria criteria) throws JsonProcessingException
     {
-        //return mapper.writeValueAsString(service.getByReferenceId("Achievement", "userId", id));
-        return ResponseFactory.getResponse(200, service.getResults(id));
+        return ResponseFactory.getResponse(200, service.getResultsForUser(id, criteria));
+    }
+
+    @JsonGet("/{userId}/exercises/{exerciseId}/results")
+    public String getResults(@PathVariable("userId") int userId, @PathVariable("exerciseId") int exerciseId, Criteria criteria) throws JsonProcessingException
+    {
+        return ResponseFactory.getResponse(200, service.getResults(userId, exerciseId, criteria));
     }
 
     @JsonGet("/{id}/posts")
-    public String getPosts(@PathVariable("id") int id) throws JsonProcessingException
+    public String getPosts(@PathVariable("id") int id, Criteria criteria) throws JsonProcessingException
     {
-        return ResponseFactory.getResponse(200, service.getByReferenceId("Post", "userId", id));
+        return ResponseFactory.getResponse(200, service.getByReferenceId("Post", "userId", id, criteria));
+    }
+
+    @JsonGet("/{id}/newsfeed")
+    public String getNewsfeed(@PathVariable("id") int id, Criteria criteria) throws JsonProcessingException
+    {
+        return ResponseFactory.getResponse(200, service.getNewsfeed(id, criteria));
     }
 }

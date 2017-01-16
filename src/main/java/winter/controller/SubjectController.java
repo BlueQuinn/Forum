@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import winter.annotation.JsonGet;
+import winter.dto.Criteria;
 import winter.http.ResponseFactory;
 import winter.model.Subject;
 
@@ -16,14 +17,14 @@ import winter.model.Subject;
 public class SubjectController extends RestfulController<Subject>
 {
     @JsonGet("/{id}/posts")
-    public String getPosts(@PathVariable("id") int id) throws JsonProcessingException
+    public String getPosts(@PathVariable("id") int id, Criteria criteria) throws JsonProcessingException
     {
-        return mapper.writeValueAsString(service.getByReferenceId("Post", "subjectId", id));
+        return mapper.writeValueAsString(service.getPosts(id, criteria));
     }
 
     @JsonGet("/{id}/exercises")
-    public String getExercises(@PathVariable("id") int id) throws JsonProcessingException
+    public String getExercises(@PathVariable("id") int id, Criteria criteria) throws JsonProcessingException
     {
-        return mapper.writeValueAsString(service.getByReferenceId("Exercise", "subjectId", id));
+        return mapper.writeValueAsString(service.getByReferenceId("Exercise", "subjectId", id, criteria));
     }
 }

@@ -19,6 +19,29 @@ public class LoginDAO
         return sessionFactory.getCurrentSession();
     }
 
+    public boolean validUsername(String username)
+    {
+        String hql = "from User where username = :username";
+        Session session = getSession();
+        Query query = session.createQuery(hql);
+        query.setParameter("username", username);
+        Object user = query.uniqueResult();
+        if (user == null)
+            return true;
+        return false;
+    }
+
+    public boolean validEmail(String email)
+    {
+        String hql = "from User where email = :email";
+        Session session = getSession();
+        Query query = session.createQuery(hql);
+        query.setParameter("email", email);
+        Object user = query.uniqueResult();
+        if (user == null)
+            return true;
+        return false;
+    }
 
     public User getUser(String email, String password)
     {

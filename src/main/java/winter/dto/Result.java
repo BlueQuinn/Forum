@@ -1,29 +1,54 @@
 package winter.dto;
 
+import javax.persistence.*;
+import java.io.Serializable;
+
 /**
- * Created by lequan on 12/15/2016.
+ * Created by lequan on 11/20/2016.
  */
 public class Result
 {
-    String exercise;
-    int score;
+    private int id;
+    private Integer userId;
+    private Integer exerciseId;
+    private Integer score;
 
-    public String getExercise()
+    public int getId()
     {
-        return exercise;
+        return id;
     }
 
-    public void setExercise(String exercise)
+    public void setId(int id)
     {
-        this.exercise = exercise;
+        this.id = id;
     }
 
-    public int getScore()
+    public Integer getUserId()
+    {
+        return userId;
+    }
+
+    public void setUserId(Integer userId)
+    {
+        this.userId = userId;
+    }
+
+    public Integer getExerciseId()
+    {
+        return exerciseId;
+    }
+
+    public void setExerciseId(Integer exerciseId)
+    {
+        this.exerciseId = exerciseId;
+    }
+
+    public Integer getScore()
     {
         return score;
     }
 
-    public void setScore(int score)
+    public void setScore(Integer score)
     {
         this.score = score;
     }

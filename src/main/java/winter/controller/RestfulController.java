@@ -12,6 +12,7 @@ import winter.annotation.JsonDelete;
 import winter.annotation.JsonGet;
 import winter.annotation.JsonPost;
 import winter.annotation.JsonPut;
+import winter.dto.Criteria;
 import winter.http.ResponseFactory;
 import winter.service.RestfulService;
 
@@ -45,18 +46,19 @@ public class RestfulController<T extends Serializable>
         }
     }*/
 
+    /* @JsonGet()
+     public String get(@RequestParam(value = "order", required = false, defaultValue = "id") String order,
+                       @RequestParam(value = "sort", required = false, defaultValue = "asc") String sort,
+                       @RequestParam(value = "offset", required = false, defaultValue = "0") Integer offset,
+                       @RequestParam(value = "limit", required = false) Integer limit,
+                       @PathVariable("model") String model) throws JsonProcessingException*/
     @JsonGet()
-    public String get(@RequestParam(value = "order", required = false, defaultValue = "id") String order,
-                      @RequestParam(value = "sort", required = false, defaultValue = "asc") String sort,
-                      @PathVariable("model") String model) throws JsonProcessingException
+    public String get(@PathVariable("model") String model, Criteria criteria) throws JsonProcessingException
     {
+        System.out.println(mapper.writeValueAsString(criteria));
         try
         {
-            if (order.equals("id") && sort.equals("asc"))
-            {
-                return ResponseFactory.getResponse(200, service.getAll(model));
-            }
-            return ResponseFactory.getResponse(200, service.getAll(model, order, sort));
+            return ResponseFactory.getResponse(200, service.getAll(model, criteria));
         }
         catch (JsonProcessingException ex)
         {
@@ -85,7 +87,7 @@ public class RestfulController<T extends Serializable>
     {
         try
         {
-            parse(data);
+            parseBeforeAdd(data);
             Serializable id = service.add(data);
             return ResponseFactory.getResponse(200, id);
         }
@@ -123,7 +125,12 @@ public class RestfulController<T extends Serializable>
         }
     }
 
-    void parse(T data)
+    void parseBeforeAdd(T data)
+    {
+
+    }
+
+    void parseAfterGet(T data)
     {
 
     }

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import winter.annotation.JsonGet;
+import winter.dto.Criteria;
 import winter.http.ResponseFactory;
 import winter.model.Exercise;
 import winter.service.RestfulService;
@@ -19,14 +20,14 @@ import winter.service.RestfulService;
 public class ExerciseController extends RestfulController<Exercise>
 {
     @JsonGet("/{id}/questions")
-    public String getQuestions(@PathVariable("id") int id) throws JsonProcessingException
+    public String getQuestions(@PathVariable("id") int id, Criteria criteria) throws JsonProcessingException
     {
-        return ResponseFactory.getResponse(200, service.getByReferenceId("Question", "exerciseId", id));
+        return ResponseFactory.getResponse(200, service.getByReferenceId("Question", "exerciseId", id, criteria));
     }
 
     @JsonGet("/{id}/results")
-    public String getResults(@PathVariable("id") int id) throws JsonProcessingException
+    public String getResults(@PathVariable("id") int id, Criteria criteria) throws JsonProcessingException
     {
-        return ResponseFactory.getResponse(200, service.getByReferenceId("Result", "exerciseId", id));
+        return ResponseFactory.getResponse(200, service.getResultsForExercise(id, criteria));
     }
 }

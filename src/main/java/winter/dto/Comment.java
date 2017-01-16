@@ -9,8 +9,9 @@ public class Comment
     int userId;
     String username;
     String content;
+    String image;
     int rating;
-    private Long date;
+    private long date;
 
     public int getId()
     {
@@ -68,6 +69,21 @@ public class Comment
     }
 
     public void setDate(Long date)
+    {
+        this.date = date;
+    }
+
+    public String getImage()
+    {
+        return image;
+    }
+
+    public void setImage(String image)
+    {
+        this.image = image;
+    }
+
+    public void setDate(long date)
     {
         this.date = date;
     }

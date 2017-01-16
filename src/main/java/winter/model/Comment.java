@@ -14,6 +14,7 @@ public class Comment implements Serializable
     private Integer userId;
     private String content;
     private Integer rating;
+    private String image;
     private Long date;
 
     @Id
@@ -75,6 +76,18 @@ public class Comment implements Serializable
     public void setRating(Integer rating)
     {
         this.rating = rating;
+    }
+
+    @Basic
+    @Column(name = "image", nullable = true)
+    public String getImage()
+    {
+        return image;
+    }
+
+    public void setImage(String image)
+    {
+        this.image = image;
     }
 
     @Basic

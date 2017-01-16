@@ -4,19 +4,13 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import winter.dto.Comment;
-import winter.dto.Likes;
-import winter.dto.Result;
-import winter.dto.Subscription;
-import winter.model.User;
+import winter.dto.*;
 
 import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Properties;
 
 /**
  * Created by lequan on 11/20/2016.
@@ -55,20 +49,6 @@ public class RestfulDAO
         return (ArrayList) getSession().createQuery("from " + modelName).list();
     }
 
-    public ArrayList getAll(String modelName, String order, String sort)
-    {
-        String hql  = "from " + modelName + " order by " + order + " " + sort;
-        return (ArrayList) getSession().createQuery(hql).list();
-    }
-
-    public ArrayList getByReferenceId(String detail, String masterId, int id)
-    {
-        String hql = String.format("from %s where %s = %d", detail, masterId, id);
-        //"select o from " + master + " o where " + masterid + " = " + id;
-        Query query = getSession().createQuery(hql);
-        return (ArrayList) query.list();
-    }
-
     public void update(Serializable model)
     {
         getSession().update(model);
@@ -81,27 +61,60 @@ public class RestfulDAO
         query.executeUpdate();
     }
 
+    void addPrefix(Criteria criteria, String table)
+    {
+        String order = criteria.getOrder();
+        if (!order.equals("id"))
+        {
+            criteria.setOrder(table + "." + order);
+        }
+    }
 
-    /* Field[] createField(Class<?> type, String[] columns)
-   {
-       Field[] fields = new Field[columns.length];
-       try
-       {
-           Field field;
-           for (int i = 0; i < columns.length; ++i)
-           {
-               fields[i] = type.getDeclaredField(columns[i]);
-               fields[i].setAccessible(true);
-           }
-       }
-       catch (NoSuchFieldException e)
-       {
-           e.printStackTrace();
-       }
-       return fields;
-   }*/
+    ArrayList query(String hql, Criteria criteria)
+    {
+        if (criteria.getTable() != null)
+        {
+            if (criteria.getOrder() != null)
+            {
+                hql += " order by " + criteria.getTable() + "." + criteria.getOrder();
+            }
+        }
+        else if (!criteria.getOrder().equals("id"))
+        {
+            hql += " order by " + criteria.getOrder();
+        }
 
-    ArrayList parseResult(Class<?> type, ArrayList<Object[]> rows)
+        if (!criteria.getSort().equals("asc"))
+        {
+            hql += " desc";
+        }
+
+        System.out.println(hql);
+        Query query = getSession().createQuery(hql);
+        if (criteria.getOffset() != 0)
+        {
+            query.setFirstResult(criteria.getOffset());
+        }
+        if (criteria.getLimit() != null)
+        {
+            query.setMaxResults(criteria.getLimit());
+        }
+        return (ArrayList) query.list();
+    }
+
+    public ArrayList getAll(String modelName, Criteria criteria)
+    {
+        String hql = "from " + modelName;
+        return query(hql, criteria);
+    }
+
+    public ArrayList getByReferenceId(String detail, String masterId, int id, Criteria criteria)
+    {
+        String hql = String.format("from %s where %s = %d", detail, masterId, id);
+        return query(hql, criteria);
+    }
+
+    ArrayList parse(Class<?> type, ArrayList<Object[]> rows)
     {
         try
         {
@@ -147,40 +160,140 @@ public class RestfulDAO
 
     public ArrayList getSubscriptions(int userId)
     {
-        String hql = String.format("select Sc.id, Sj.name from Subject Sj, Subscription Sc, User U where U.id = %d and U.id = Sc.userId and Sc.subjectId = Sj.id", userId);
+        String hql = String.format("select subscription.id, subject.name from Subject subject, Subscription subscription where subscription.userId = %d and subscription.subjectId = subject.id", userId);
         Query query = getSession().createQuery(hql);
         ArrayList<Object[]> list = (ArrayList) query.list();
-        return parseResult(Subscription.class, list);
+        return parse(Subscription.class, list);
     }
 
     public ArrayList getAchievement(int userId)
     {
-        String hql = String.format("select B.name from Badge B, Achievement A, User U where U.id = %d and U.id = A.userId and A.badgeId = B.id", userId);
+        String hql = String.format("select badge.name from Badge badge, Achievement achievement where achievement.userId = %d and achievement.badgeId = badge.id", userId);
         Query query = getSession().createQuery(hql);
         return (ArrayList) query.list();
     }
 
-    public ArrayList getResults(int userId)
+    public ArrayList getResultsForUser(int userId, Criteria criteria)
     {
-        String hql = String.format("select E.name, R.score from Result R, Exercise E, User U where U.id = %d and U.id = R.userId and R.exerciseId = E.id", userId);
-        Query query = getSession().createQuery(hql);
-        ArrayList list = (ArrayList) query.list();
-        return parseResult(Result.class, list);
+        String hql = String.format("select exercise.id, exercise.name, result.score from Result result, Exercise exercise where result.userId = %d and result.exerciseId = exercise.id", userId);
+        ArrayList list = query(hql, criteria);
+        return parse(ResultForUser.class, list);
     }
 
-    public ArrayList getComments(int postId)
+    public ArrayList getResultsForExercise(int exerciseId, Criteria criteria)
     {
-        String hql = String.format("select C.id, U.id, U.username, C.content, C.rating, C.date  from Comment C, Post P, User U where P.id = %d and P.id = C.postId and C.userId = U.id", postId);
-        Query query = getSession().createQuery(hql);
-        ArrayList list = (ArrayList) query.list();
-        return parseResult(Comment.class, list);
+        String hql = String.format("select user.id, user.username, result.score from Result result, User user where result.exerciseId = %d and user.id = result.userId", exerciseId);
+        ArrayList list = query(hql, criteria);
+        return parse(ResultForExercise.class, list);
     }
 
-    public ArrayList getLikes(int postId)
+    public ArrayList getResults(int userId, int exerciseId, Criteria criteria)
     {
-        String hql = String.format("select L.id, U.id, U.name from Post P, Likes L, User U where U.id = %d and U.id = L.userId and L.postId = P.id", postId);
+        String hql = String.format("from Result result where result.userId = %d and result.exerciseId = %d", userId, exerciseId);
         Query query = getSession().createQuery(hql);
-        ArrayList list = (ArrayList) query.list();
-        return parseResult(Likes.class, list);
+        return (ArrayList) query.list();
+    }
+
+    public ArrayList getComments(int postId, Criteria criteria)
+    {
+        String hql = String.format("select comment.id, user.id, user.username, comment.content, comment.image, comment.rating, comment.date from Comment comment, User user where comment.postId = %d and comment.userId = user.id", postId);
+        ArrayList list = query(hql, criteria);
+        return parse(Comment.class, list);
+    }
+
+    public ArrayList getLikes(int postId, Criteria criteria)
+    {
+        String hql = String.format("select likes.id, user.id, user.username from Likes likes, User user where likes.postId = %d and user.id = likes.userId", postId);
+        ArrayList list = query(hql, criteria);
+        return parse(Likes.class, list);
+    }
+
+    public ArrayList getPosts(int subjectId, Criteria criteria)
+    {
+        String hql = String.format("select post.id, user.id, user.username, post.content, post.image, post.rating, post.date, count(comment.id) from Post post, User user, Comment comment" +
+                " where post.subjectId = %d" +
+                " and post.userId = user.id and post.id = comment.postId" +
+                " group by post.id", subjectId);
+        ArrayList list = query(hql, criteria);
+        return parse(Post.class, list);
+    }
+
+    public ArrayList getNewsfeed(int userId, Criteria criteria)     // userId here is belong to the subscription, not post's userId
+    {
+        String hql = String.format("select post.id, user.id, user.username, post.content, post.image, post.rating, post.date, count(comment.id) from Post post, Subscription subscription, User user, Comment comment" +
+                " where subscription.userId = %d and subscription.subjectId = post.subjectId" +
+                " and post.userId = user.id and post.id = comment.postId" +
+                " group by post.id", userId);
+        ArrayList list = query(hql, criteria);
+        return parse(Post.class, list);
     }
 }
+
+
+
+    /* Field[] createField(Class<?> type, String[] columns)
+   {
+       Field[] fields = new Field[columns.length];
+       try
+       {
+           Field field;
+           for (int i = 0; i < columns.length; ++i)
+           {
+               fields[i] = type.getDeclaredField(columns[i]);
+               fields[i].setAccessible(true);
+           }
+       }
+       catch (NoSuchFieldException e)
+       {
+           e.printStackTrace();
+       }
+       return fields;
+   }*/
+
+
+
+
+
+
+
+    /*
+ArrayList query(String hql, Criteria criteria)
+    {
+        if (!criteria.getOrder().equals("id"))
+        {
+            hql += " order by " + criteria.getOrder();
+            if (!criteria.getSort().equals("asc"))
+            {
+                hql += " desc";
+            }
+        }
+
+        Query query = getSession().createQuery(hql);
+        if (criteria.getOffset() != 0)
+        {
+            query.setFirstResult(criteria.getOffset());
+        }
+        if (criteria.getLimit() != null)
+        {
+            query.setMaxResults(criteria.getLimit());
+        }
+        return (ArrayList) query.list();
+    }
+
+
+    ArrayList query(String hql, String order, String sort, int offset, Integer limit)
+    {
+        if (!order.equals("id"))
+        {
+            hql += " order by " + order;
+            if (!sort.equals("asc"))
+                hql += " desc";
+        }
+
+        Query query = getSession().createQuery(hql);
+        if (offset != 0)
+            query.setFirstResult(offset);
+        if (limit != null)
+            query.setMaxResults(limit);
+        return (ArrayList) query.list();
+    }*/
