@@ -52,7 +52,7 @@ public class RestfulController<T extends Serializable>
                        @RequestParam(value = "offset", required = false, defaultValue = "0") Integer offset,
                        @RequestParam(value = "limit", required = false) Integer limit,
                        @PathVariable("model") String model) throws JsonProcessingException*/
-    @JsonGet()
+    @JsonGet
     public String get(@PathVariable("model") String model, Criteria criteria) throws JsonProcessingException
     {
         System.out.println(mapper.writeValueAsString(criteria));
@@ -82,7 +82,7 @@ public class RestfulController<T extends Serializable>
         }
     }
 
-    @JsonPost()
+    @JsonPost
     public String add(@RequestBody T data) throws JsonProcessingException
     {
         try
