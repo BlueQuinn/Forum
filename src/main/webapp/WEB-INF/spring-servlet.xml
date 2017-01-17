@@ -63,12 +63,14 @@
     <bean id="restfulDAO" class="winter.dao.RestfulDAO"/>
     <bean id="loginDAO" class="winter.dao.LoginDAO"/>
     <bean id="friendDAO" class="winter.dao.FriendDAO"/>
+    <bean id="challengeDAO" class="winter.dao.ChallengeDAO"/>
     <!--dao-->
 
     <!--service-->
     <bean id="restfulService" class="winter.service.RestfulService"/>
     <bean id="loginService" class="winter.service.LoginService"/>
     <bean id="friendService" class="winter.service.FriendService"/>
+    <bean id="challengeService" class="winter.service.ChallengeService"/>
     <!--service-->
 
 </beans>
