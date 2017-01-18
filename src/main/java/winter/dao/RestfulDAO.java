@@ -216,7 +216,45 @@ public class RestfulDAO
         return parse(Likes.class, list);
     }
 
+    long getCommentCount(int postId)
+    {
+        String hql = String.format("select count(*) from Comment comment where comment.postId = %d", postId);
+        Query query = getSession().createQuery(hql);
+        return (Long) query.uniqueResult();
+    }
+
     public ArrayList getPosts(int subjectId, Criteria criteria)
+    {
+        String hql = String.format("select post.id, user.id, user.username, post.content, post.image, post.rating, post.date from Post post, User user" +
+                " where post.subjectId = %d" +
+                " and post.userId = user.id", subjectId);
+        ArrayList list = query(hql, criteria);
+        ArrayList<Post> posts = parse(Post.class, list);
+        for (Post post : posts)
+        {
+            post.setCommentCount(getCommentCount(post.getId()));
+        }
+        return posts;
+    }
+
+    public ArrayList getNewsfeed(int userId, Criteria criteria)     // userId here is belong to the subscription, not post's userId
+    {
+        String hql = String.format("select post.id, user.id, user.username, post.content, post.image, post.rating, post.date from Post post, Subscription subscription, User user" +
+                " where subscription.userId = %d and subscription.subjectId = post.subjectId" +
+                " and post.userId = user.id", userId);
+        ArrayList list = query(hql, criteria);
+        ArrayList<Post> posts = parse(Post.class, list);
+        for (Post post : posts)
+        {
+            post.setCommentCount(getCommentCount(post.getId()));
+        }
+        return posts;
+    }
+
+}
+
+
+  /*  public ArrayList getPosts(int subjectId, Criteria criteria)
     {
         String hql = String.format("select post.id, user.id, user.username, post.content, post.image, post.rating, post.date, count(comment.id) from Post post, User user, Comment comment" +
                 " where post.subjectId = %d" +
@@ -234,8 +272,8 @@ public class RestfulDAO
                 " group by post.id", userId);
         ArrayList list = query(hql, criteria);
         return parse(Post.class, list);
-    }
-}
+    }*/
+
 
 
 
