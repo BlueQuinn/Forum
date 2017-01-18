@@ -1,16 +1,16 @@
 package winter.model;
 
 import javax.persistence.*;
-import java.io.Serializable;
 
 /**
- * Created by lequan on 11/20/2016.
+ * Created by lequan on 1/18/2017.
  */
 @Entity
-public class Likes implements Serializable
+public class Likes
 {
     private int id;
-    private Integer postId;
+    private String target;
+    private Integer targetId;
     private Integer userId;
 
     @Id
@@ -27,15 +27,27 @@ public class Likes implements Serializable
     }
 
     @Basic
-    @Column(name = "postId", nullable = true)
-    public Integer getPostId()
+    @Column(name = "target", nullable = true, length = 16)
+    public String getTarget()
     {
-        return postId;
+        return target;
     }
 
-    public void setPostId(Integer postId)
+    public void setTarget(String target)
     {
-        this.postId = postId;
+        this.target = target;
+    }
+
+    @Basic
+    @Column(name = "targetId", nullable = true)
+    public Integer getTargetId()
+    {
+        return targetId;
+    }
+
+    public void setTargetId(Integer targetId)
+    {
+        this.targetId = targetId;
     }
 
     @Basic
@@ -68,7 +80,11 @@ public class Likes implements Serializable
         {
             return false;
         }
-        if (postId != null ? !postId.equals(likes.postId) : likes.postId != null)
+        if (target != null ? !target.equals(likes.target) : likes.target != null)
+        {
+            return false;
+        }
+        if (targetId != null ? !targetId.equals(likes.targetId) : likes.targetId != null)
         {
             return false;
         }
@@ -84,7 +100,8 @@ public class Likes implements Serializable
     public int hashCode()
     {
         int result = id;
-        result = 31 * result + (postId != null ? postId.hashCode() : 0);
+        result = 31 * result + (target != null ? target.hashCode() : 0);
+        result = 31 * result + (targetId != null ? targetId.hashCode() : 0);
         result = 31 * result + (userId != null ? userId.hashCode() : 0);
         return result;
     }

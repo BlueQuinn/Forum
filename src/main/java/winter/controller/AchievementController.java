@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import winter.annotation.JsonGet;
 import winter.model.Achievement;
+import winter.model.Exercise;
 import winter.model.Question;
 
 import java.io.File;
@@ -17,6 +18,7 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.sql.*;
 import java.util.Properties;
+import java.util.Random;
 
 /**
  * Created by lequan on 11/20/2016.
@@ -25,7 +27,8 @@ import java.util.Properties;
 @RequestMapping("/api/achievement")
 public class AchievementController extends RestfulController<Achievement>
 {
-    /*public static Connection getOracleConnection() throws Exception {
+    public static Connection getOracleConnection() throws Exception
+    {
         String driver = "com.mysql.cj.jdbc.Driver";
         String url = "jdbc:mysql://localhost:3306/chemistry";
 
@@ -34,25 +37,64 @@ public class AchievementController extends RestfulController<Achievement>
         return conn;
     }
 
+    @JsonGet("/hihi")
+    public void hihi() throws Exception
+    {
+        Connection  connection = getOracleConnection();
+        Statement statement = connection.createStatement();
+        Random random = new Random();
+
+        Exercise exercise;
+        ResultSet rs = statement.executeQuery("select * from topics where id > 3 and id < 15");
+        while (rs.next())
+        {
+            int id = rs.getInt("id") + 45;
+            String name = rs.getString("title");
+            int diff = random.nextInt(5);
+            String difficulty;
+            switch (diff)
+            {
+                case 0:
+                    difficulty = "Dễ";
+                    break;
+                case 1:
+                    difficulty = "Trung bình";
+                    break;
+                case 2:
+                    difficulty = "Khó";
+                    break;
+                case 3:
+                    difficulty = "Rất khó";
+                    break;
+                default:
+                    difficulty = "Rất dễ";
+                    break;
+            }
+
+            exercise  = new Exercise();
+            exercise.setId(id);
+            exercise.setName(name);
+            exercise.setSubjectId(6);
+            exercise.setDifficulty(difficulty);
+
+            Serializable i=   service.add(exercise);
+            System.out.println(i);
+        }
+        if (connection != null)
+        {
+            connection.close();
+        }
+    }
+
     @JsonGet("/hehe")
     public void a()
     {
         Connection connection = null;
         try
         {
-*//*   File jar = new File("D:/Doc/IT/IV-1/Mobile/Project/Database/chemistry.sqlite");
-            URL[] cp = new URL[1];
-            cp[0] = jar.toURI().toURL();
-            URLClassLoader ora8loader = new URLClassLoader(cp, ClassLoader.getSystemClassLoader());
-            Class drvClass = ora8loader.loadClass("org.sqlite.JDBC");
-            Driver driver = (Driver) drvClass.newInstance();
 
-            Properties props = new Properties();
-            Class.forName("org.sqlite.JDBC");
-            connection = driver.connect("jdbc:sqlite:D:/Doc/IT/IV-1/Mobile/Project/Database/chemistry.sqlite", props);
-          *//*
-connection = getOracleConnection();
-Statement statement = connection.createStatement();
+            connection = getOracleConnection();
+            Statement statement = connection.createStatement();
             statement.setQueryTimeout(60);
 
             int count = 0;
@@ -81,9 +123,9 @@ Statement statement = connection.createStatement();
 
                     case 3:
                     {
-                        int id = rs.getInt("id");
+                        int id = rs.getInt("id") + 1915;
                         String content = rs.getString("content");
-                        int exerciseId = rs.getInt("topic_id");
+                        int exerciseId = rs.getInt("topic_id") + 45;
 
                         question.setId(id);
                         question.setContent(content);
@@ -142,5 +184,5 @@ Statement statement = connection.createStatement();
                 System.err.println(e);
             }
         }
-    }*/
+    }
 }

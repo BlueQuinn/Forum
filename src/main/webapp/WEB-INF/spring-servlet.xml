@@ -21,7 +21,8 @@
 
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="location">
-            <value>WEB-INF/database.properties</value>
+            <value>WEB-INF/remote.properties</value>
+       <!--     <value>WEB-INF/local.properties</value>-->
         </property>
     </bean>
 
@@ -49,6 +50,12 @@
                 <value>winter.model.Subject</value>
                 <value>winter.model.Subscription</value>
             </list>
+        </property>
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.connection.url">jdbc:mysql://esx.vmwares.in:33066/forum</prop>
+                <prop key="hibernate.connection.driver_class">com.mysql.jdbc.Driver</prop>
+            </props>
         </property>
     </bean>
 

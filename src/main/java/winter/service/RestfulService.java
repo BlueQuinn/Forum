@@ -87,9 +87,14 @@ public class RestfulService
         return dao.getComments(postId, criteria);
     }
 
-    public ArrayList getLikes(int postId, Criteria criteria)
+    public ArrayList getLikesForComment(int commentId, Criteria criteria)
     {
-        return dao.getLikes(postId, criteria);
+        return dao.getLikes("comment", commentId, criteria);
+    }
+
+    public ArrayList getLikesForPost(int postId, Criteria criteria)
+    {
+        return dao.getLikes("post", postId, criteria);
     }
 
     public ArrayList getPosts(int subjectId, Criteria criteria)

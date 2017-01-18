@@ -39,6 +39,6 @@ public class PostController extends RestfulController<Post>
     @JsonGet("/{id}/likes")
     public String getLikes(@PathVariable("id") int id, Criteria criteria) throws JsonProcessingException
     {
-        return ResponseFactory.getResponse(200, service.getLikes(id, criteria));
+        return ResponseFactory.getResponse(200, service.getLikesForPost(id, criteria));
     }
 }

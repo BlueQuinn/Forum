@@ -204,9 +204,9 @@ public class RestfulDAO
         return parse(Comment.class, list);
     }
 
-    public ArrayList getLikes(int postId, Criteria criteria)
+    public ArrayList getLikes(String target, int targetId, Criteria criteria)
     {
-        String hql = String.format("select likes.id, user.id, user.username from Likes likes, User user where likes.postId = %d and user.id = likes.userId", postId);
+        String hql = String.format("select likes.id, user.id, user.username from Likes likes, User user where likes.target = '%s' and likes.targetId = %d and user.id = likes.userId", target, targetId);
         ArrayList list = query(hql, criteria);
         return parse(Likes.class, list);
     }
