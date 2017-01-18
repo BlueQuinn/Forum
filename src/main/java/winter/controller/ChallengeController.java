@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import winter.annotation.JsonGet;
 import winter.dto.Criteria;
+import winter.http.ResponseFactory;
 import winter.service.ChallengeService;
 
 /**
@@ -24,8 +25,15 @@ public class ChallengeController
     ChallengeService service;
 
     @JsonGet
-    public String get(@RequestParam(value="limit", required = false, defaultValue = "50") Integer limit) throws JsonProcessingException
+    public String get(@RequestParam(value = "limit", required = false, defaultValue = "50") Integer limit) throws JsonProcessingException
     {
-return mapper.writeValueAsString(service.get(limit));
-}
+        try
+        {
+            return ResponseFactory.getResponse(200, service.get(limit));
+        }
+        catch (JsonProcessingException e)
+        {
+            return ResponseFactory.getResponse(400, e.getMessage());
+        }
+    }
 }
