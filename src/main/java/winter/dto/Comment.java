@@ -1,5 +1,7 @@
 package winter.dto;
 
+import java.util.ArrayList;
+
 /**
  * Created by lequan on 12/15/2016.
  */
@@ -12,6 +14,18 @@ public class Comment
     String image;
     int rating;
     private long date;
+
+    ArrayList likes;
+
+    public ArrayList getLikes()
+    {
+        return likes;
+    }
+
+    public void setLikes(ArrayList likes)
+    {
+        this.likes = likes;
+    }
 
     public int getId()
     {

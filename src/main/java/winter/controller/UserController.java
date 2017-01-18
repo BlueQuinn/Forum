@@ -87,4 +87,10 @@ public class UserController extends RestfulController<User>
     {
         return ResponseFactory.getResponse(200, service.getNewsfeed(id, criteria));
     }
+
+  /*  @JsonGet("/{id}/hasLiked")
+    public String checkLiked(@PathVariable("target") String target,@PathVariable("targetId") int targetId) throws JsonProcessingException
+    {
+        return ResponseFactory.getResponse(200, service.getNewsfeed(id, criteria));
+    }*/
 }

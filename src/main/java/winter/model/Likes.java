@@ -1,12 +1,13 @@
 package winter.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * Created by lequan on 1/18/2017.
  */
 @Entity
-public class Likes
+public class Likes implements Serializable
 {
     private int id;
     private String target;

@@ -133,7 +133,7 @@ public class RestfulDAO
             for (Object[] row : rows)
             {
                 model = constructor.newInstance();      // throw exception
-                for (int i = 0; i < fields.length; ++i)
+                for (int i = 0; i < row.length; ++i)
                 {
                     fields[i].set(model, row[i]);
                 }
@@ -201,7 +201,12 @@ public class RestfulDAO
     {
         String hql = String.format("select comment.id, user.id, user.username, comment.content, comment.image, comment.rating, comment.date from Comment comment, User user where comment.postId = %d and comment.userId = user.id", postId);
         ArrayList list = query(hql, criteria);
-        return parse(Comment.class, list);
+        ArrayList<Comment> comments = parse(Comment.class, list);
+        for (Comment comment : comments)
+        {
+            comment.setLikes(getLikes("comment", comment.getId(), new Criteria()));
+        }
+        return comments;
     }
 
     public ArrayList getLikes(String target, int targetId, Criteria criteria)
