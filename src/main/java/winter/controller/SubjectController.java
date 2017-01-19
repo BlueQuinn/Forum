@@ -19,12 +19,12 @@ public class SubjectController extends RestfulController<Subject>
     @JsonGet("/{id}/posts")
     public String getPosts(@PathVariable("id") int id, Criteria criteria) throws JsonProcessingException
     {
-        return mapper.writeValueAsString(service.getPosts(id, criteria));
+        return ResponseFactory.getResponse(200, service.getPosts(id, criteria));
     }
 
     @JsonGet("/{id}/exercises")
     public String getExercises(@PathVariable("id") int id, Criteria criteria) throws JsonProcessingException
     {
-        return mapper.writeValueAsString(service.getByReferenceId("Exercise", "subjectId", id, criteria));
+        return ResponseFactory.getResponse(200, service.getByReferenceId("Exercise", "subjectId", id, criteria));
     }
 }
